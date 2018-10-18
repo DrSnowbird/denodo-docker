@@ -1,0 +1,15 @@
+*workspace
+eclipse*
+.meta*
+*.swp
+*.class
+*.log
+*.tgz
+*.zip
+*.deb
+*.tar.gz
+*.swp
+*.save
+fuse*
+*.lic
+denodo-*
