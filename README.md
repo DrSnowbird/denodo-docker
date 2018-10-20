@@ -3,8 +3,6 @@
 
 * Denodo Docker + Java 8 JDK + Maven 3.5 + Python 3.5 + Gradle + X11 (display GUI)
 
-# NOTE: This docker default is providing latest Eclipse Photon instead of Oxygen and you can change it to build other versions!!!
-
 # License Agreement
 By using this image, you agree the [Oracle Java JDK License](http://www.oracle.com/technetwork/java/javase/terms/license/index.html).
 This image contains [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html). You must accept the [Oracle Binary Code License Agreement for Java SE](http://www.oracle.com/technetwork/java/javase/terms/license/index.html) to use this image.
