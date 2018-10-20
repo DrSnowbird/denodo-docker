@@ -42,6 +42,12 @@ ENV WORKSPACE=${HOME}/workspace
 ARG PRODUCT_VERSION=${PRODUCT_VERSION:-7_0}
 ENV PRODUCT_VERSION=${PRODUCT_VERSION}
 
+ARG PRODUCT_HOME=${PRODUCT_HOME:-${HOME}/denodo-platform-7.0}
+ENV PRODUCT_HOME=${PRODUCT_HOME}
+
+ARG PRODUCT_EXE=${PRODUCT_EXE:-${PRODUCT_HOME}/bin/denodo_platform.sh}
+ENV PRODUCT_EXE=${PRODUCT_EXE}
+
 ## -- 2.) Product Type: -- ##
 ARG PRODUCT_TYPE=${PRODUCT_TYPE:-install}
 
@@ -60,6 +66,8 @@ ARG PRODUCT_OS_BUILD=${PRODUCT_OS_BUILD:-linux64}
 # denodo-express-install-7_0-linux64.zip
 ARG PRODUCT_TAR=${PRODUCT_TAR:-${PRODUCT}-${PRODUCT_TYPE}-${PRODUCT_VERSION}.zip}
 
+ARG PRODUCT_TGZ=${PRODUCT_TGZ:-denodo-platform-7.0.tgz}
+
 ## -- Product Download route: -- ##
 # https://community.denodo.com/express/download-installer-7.0/generic
 ARG PRODUCT_DOWNLOAD_ROUTE=${PRODUCT_DOWNLOAD_ROUTE:-https://community.denodo.com/express/download-installer-7.0/generic}
@@ -67,21 +75,22 @@ ARG PRODUCT_DOWNLOAD_ROUTE=${PRODUCT_DOWNLOAD_ROUTE:-https://community.denodo.co
 ## -- Product Download full URL: -- ##
 ARG PRODUCT_DOWNLOAD_URL=${PRODUCT_DOWNLOAD_URL:-https://community.denodo.com/express/download-installer-7.0/generic}
 
-WORKDIR /opt
-
-#RUN sudo wget -c ${PRODUCT_DOWNLOAD_URL}/${PRODUCT_TAR} && \
-#    sudo tar xvf ${PRODUCT_TAR} && \
-#    sudo rm ${PRODUCT_TAR} 
+WORKDIR ${HOME}
 
 #### ---- Use local copy since Denodo requiring login to download ---- ####
-COPY ./denodo-express-install-7_0.zip ./
-COPY ./denodo-express-lic-7_0-201808.lic ./
+COPY ./${PRODUCT_TGZ} ./
 
-RUN unzip ./denodo-express-install-7_0.zip 
+RUN sudo chown $USER:$USER ./${PRODUCT_TGZ} && \
+    tar xvf ./${PRODUCT_TGZ}
 
+## -- installation ---
+#COPY ./denodo-express-install-7_0.zip ./
+#COPY ./denodo-express-lic-7_0-201808.lic ./
+#RUN unzip ./denodo-express-install-7_0.zip && \
+#    sudo chmod +x /opt/denodo-install-7.0/*.sh && \
+#     sudo -Eu developer bash -c '/opt/denodo-install-7.0/install.sh'
 
-RUN sudo chmod +x *.sh && \
-    sudo /opt/denodo-install-7.0/install.sh
+#CMD "/bin/bash", "-c", "${PRODUCT_EXE}"
+CMD ["/bin/bash", "-c", "${PRODUCT_EXE}"]
 
-    
-CMD ["/usr/bin/firefox"]
+#CMD ["/usr/bin/firefox"]

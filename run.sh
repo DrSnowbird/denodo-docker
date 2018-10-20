@@ -261,5 +261,5 @@ docker run -it \
     ${PORT_MAP} \
     ${imageTag} $*
 
-cleanup
+#cleanup
 
