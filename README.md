@@ -29,6 +29,7 @@ You need two files to build and, after successful buil, you then can launch Deno
 ```
 
 # Build
+* (Note: this image will be 5.1 GB - huge!)
 * Once you have the above two files, you can build the image. 
 * During the build, it will install Denodo Express -- this might take about 15 ~ 20 minutes
 ```
