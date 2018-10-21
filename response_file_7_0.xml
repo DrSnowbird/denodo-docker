@@ -4,9 +4,10 @@
 <com.izforge.izpack.panels.LicencePanel id="UNKNOWN (com.izforge.izpack.panels.LicencePanel)"/>
 <com.izforge.izpack.panels.UserInputPanel id="UNKNOWN (com.izforge.izpack.panels.UserInputPanel)">
 <userInput>
-<entry key="LICENSE_FILE" value=""/>
+<entry key="LICENSE_FILE" value="../denodo-platform-7.0/denodo-express-lic-7_0.lic"/>
 <entry key="SETUP_TYPE" value="express"/>
-<entry key="INSTALL_PATH" value=""/>
+<entry key="INSTALL_PATH" value="../denodo-platform-7.0"/>
+<!-- entry key="INSTALL_PATH" value=""/ -->
 </userInput>
 </com.izforge.izpack.panels.UserInputPanel>
 <com.izforge.izpack.panels.DenodoTreePacksPanel id="UNKNOWN (com.izforge.izpack.panels.DenodoTreePacksPanel)">

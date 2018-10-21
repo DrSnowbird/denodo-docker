@@ -75,14 +75,24 @@ COPY ./denodo-express-lic-7_0.lic ${PRODUCT_HOME}/
 ## ~/denodo-install-7.0/installer_cli.sh install --autoinstaller ~/denodo-install-7.0/response_file_7_0.xml
 RUN ${HOME}/denodo-install-7.0/installer_cli.sh install --autoinstaller ${HOME}/denodo-install-7.0/response_file_7_0.xml
 
-RUN echo "PRODUCT_TAR=${PRODUCT_TAR}" && \
+ARG PRODUCT_VERSION=${PRODUCT_VERSION:-"7_0"}
+
+#RUN sudo chown ${USER_NAME}:${USER_NAME} ${PRODUCT_HOME}/denodo-express-lic-7_0.lic && \
+#    sudo rm -rf denodo-express-install-7_0.zip denodo-install-7.0  
+
+RUN \
+    echo "PRODUCT_TAR=${PRODUCT_TAR}" && \
     echo "PRODUCT_HOME=${PRODUCT_HOME}" && \
-    echo "PRODUCT_VERSION=${PRODUCT_VERSION}"
+    echo "PRODUCT_VERSION=${PRODUCT_VERSION}" && \
+    echo "DENODO_VERSION=${DENODO_VERSION}"   
     
 WORKDIR ${HOME}
+USER ${USER_NAME}
 
 #CMD ["/bin/bash", "-c", "${PRODUCT_EXE}"]
 ## ~/denodo-install-7.0/in/denodo_platform.sh
-CMD ["/bin/bash", "-c", "${HOME}/denodo-platform-7.0/bin/denodo_platform.sh]
+#CMD ["/bin/bash", "-c", "${HOME}/denodo-platform-7.0/bin/denodo_platform.sh"]
 
-#CMD ["/usr/bin/firefox"]
+#ENTRYPOINT ["/bin/bash"]
+#CMD ["-c","${HOME}/denodo-platform-7.0/bin/denodo_platform.sh"]
+CMD ["/usr/bin/firefox"]
