@@ -17,14 +17,29 @@ This image contains [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase
 * X11 display desktop
 * Other tools: git wget unzip vim python python-setuptools python-dev python-numpy 
 
-# Build
-At this moment, we haven't solve how to do silient installation of Denodo.
+# Pre-requisites
+You need two files to build and, after successful buil, you then can launch Denodo.
+* Denodo Express Installer (generic) zip file by downloading from https://community.denodo.com/express/download/
 ```
-#./build.sh
+./denodo-express-install-7_0.zip
+```
+* Denodo Express Free License file from your Denodo's account by [sign in onto you Denodo account](https://community.denodo.com/login?destination=https%3A%2F%2Fcommunity.denodo.com%2Fdocs%2Fhtml%2Fbrowse%2F7.0%2Fplatform%2Finstallation%2Fpreinstallation_tasks%2Fdownload_an_installer%2Fdownload_an_installer) and save your license as the file name below:
+```
+./denodo-express-lic-7_0.lic
+```
+
+# Build
+* Once you have the above two files, you can build the image. 
+* During the build, it will install Denodo Express -- this might take about 15 ~ 20 minutes
+```
+./build.sh
 ```
 
 # Run (recommended for easy-start)
-Not ready yet.
+* Once the above build is done, you can run Denodo now using the command below.
+```
+./run.sh
+```
 
 # Configurations (Optional)
 If you run "./run.sh" instead of "docker-compose up", you don't have to do anything as below.
