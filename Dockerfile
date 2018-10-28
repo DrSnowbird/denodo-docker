@@ -77,18 +77,23 @@ RUN ${HOME}/denodo-install-7.0/installer_cli.sh install --autoinstaller ${HOME}/
 
 RUN sudo chown ${USER_NAME}:${USER_NAME} ${PRODUCT_HOME}/denodo-express-lic-7_0.lic && \
     sudo rm -rf denodo-express-install-7_0.zip  
-#    sudo rm -rf denodo-express-install-7_0.zip denodo-install-7.0  
+## -- Need denodo-install-7.0 to run correctly (can't delete it!) -- ##
+## sudo rm -rf denodo-express-install-7_0.zip denodo-install-7.0  
 
 RUN \
     echo "PRODUCT_TAR=${PRODUCT_TAR}" && \
     echo "PRODUCT_HOME=${PRODUCT_HOME}" && \
     echo "PRODUCT_VERSION=${PRODUCT_VERSION}" 
     
+#### --- Working Directory ---- ####
 WORKDIR ${HOME}
 USER ${USER_NAME}
 
-#CMD ["/bin/bash", "-c", "${PRODUCT_EXE}"]
-## ~/denodo-install-7.0/in/denodo_platform.sh
-#CMD ["/bin/bash", "-c", "${HOME}/denodo-platform-7.0/bin/denodo_platform.sh"]
+#### --- Copy Entrypoint script in the container ---- ####
+COPY ./docker-entrypoint.sh /
 
-CMD ["/usr/bin/firefox"]
+#### --- Enterpoint for container ---- ####
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+#### --- For debug only ---- ####
+#CMD ["/usr/bin/firefox"]

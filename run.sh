@@ -252,7 +252,7 @@ echo ${DISPLAY}
 #    --user $(id -u $USER) \
 
 DISPLAY=${MY_IP}:0 \
-docker run -it \
+docker run -dit \
     --name=${instanceName} \
     --restart=${RESTART_OPTION} \
     ${privilegedString} \
@@ -260,7 +260,7 @@ docker run -it \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     ${VOLUME_MAP} \
     ${PORT_MAP} \
-    ${imageTag} $*
+    ${imageTag} /bin/bash $*
 
 #cleanup
 
