@@ -18,12 +18,12 @@ This image contains [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase
 * Other tools: git wget unzip vim python python-setuptools python-dev python-numpy 
 
 # Pre-requisites
-You need two files to build and, after successful buil, you then can launch Denodo.
-* Denodo Express Installer (generic) zip file by downloading from https://community.denodo.com/express/download/
+You need two files to build and, after successful build, then you can launch Denodo Desktop.
+* "Denodo Express Installer (generic) zip" file by downloading from https://community.denodo.com/express/download/
 ```
 ./denodo-express-install-7_0.zip
 ```
-* Denodo Express Free License file from your Denodo's account by [sign in onto you Denodo account](https://community.denodo.com/login?destination=https%3A%2F%2Fcommunity.denodo.com%2Fdocs%2Fhtml%2Fbrowse%2F7.0%2Fplatform%2Finstallation%2Fpreinstallation_tasks%2Fdownload_an_installer%2Fdownload_an_installer) and save your license as the file name below:
+* "Denodo Express Free License" file from your free Denodo's account by [sign in onto you free Denodo account](https://community.denodo.com/login?destination=https%3A%2F%2Fcommunity.denodo.com%2Fdocs%2Fhtml%2Fbrowse%2F7.0%2Fplatform%2Finstallation%2Fpreinstallation_tasks%2Fdownload_an_installer%2Fdownload_an_installer) and save your license as the file name below:
 ```
 ./denodo-express-lic-7_0.lic
 ```
