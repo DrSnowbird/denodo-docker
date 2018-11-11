@@ -1,10 +1,11 @@
 version: '3' 
 services:
-  docker-eclipse-photon:
-    image: openkbs/eclipse-photon-docker
+  denodo-docker:
+    image: openkbs/denodo-docker
     build:
-      context: ./Dockerfile
-    container_name: eclipse-photon-docker
+      context: .
+      dockerfile: Dockerfile
+    container_name: denodo-docker
     environment:
       - USER_ID=${USER_ID:-1000}
       - GROUP_ID=${GROUP_ID:-1000}
@@ -13,6 +14,6 @@ services:
       - ./.env
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./.eclipse-workspace:/home/developer/eclipse-workspace
-      - ./.eclipse:/home/developer/.eclipse
+      - ./workspace:/home/developer/workspace
+      - ./data:/home/developer/data
 
