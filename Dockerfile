@@ -24,12 +24,16 @@ LABEL org.label-schema.url="https://imagelayers.io" \
 ENV USER_NAME=${USER_NAME:-developer}
 ENV HOME=/home/${USER_NAME}
 ENV WORKSPACE=${HOME}/workspace
+ENV WORK_DIR=${HOME}
 
 ## -- 1.) Product version, etc.: -- ##
 ARG PRODUCT_NAME=${PRODUCT_NAME:-denodo-express}
-ARG PRODUCT_VERSION=${PRODUCT_VERSION:-7_0}
-ARG PRODUCT_INSTALLER_DIR=${PRODUCT_INSTALLER_DIR:-${HOME}/denodo-install-7.0}
-ARG PRODUCT_HOME=${PRODUCT_HOME:-${HOME}/denodo-platform-7.0}
+ARG PRODUCT_VERSION=${PRODUCT_VERSION:-7.0}
+ARG PRODUCT_LICENSE=${PRODUCT_LICENSE:-denodo-express-lic-${PRODUCT_VERSION}.lic}
+ARG PRODUCT_INSTALLER_DIR=${PRODUCT_INSTALLER_DIR:-"${WORK_DIR}/denodo-install-${PRODUCT_VERSION}"}
+ARG PRODUCT_INSTALLER_RESPONSE_FILE=${PRODUCT_INSTALLER_RESPONSE_FILE:-response-file-${PRODUCT_VERSION}.xml}
+ARG PRODUCT_INSTALLER_ZIP=${PRODUCT_INSTALLER_ZIP:-denodo-express-install-${PRODUCT_VERSION}.zip}
+ARG PRODUCT_HOME=${PRODUCT_HOME:-"${HOME}/denodo-platform-${PRODUCT_VERSION}"}
 ARG PRODUCT_EXE=${PRODUCT_EXE:-${PRODUCT_HOME}/bin/denodo_platform.sh}
 ENV PRODUCT_EXE=${PRODUCT_EXE}
 
@@ -49,36 +53,42 @@ ARG PRODUCT_OS_BUILD=${PRODUCT_OS_BUILD:-linux64}
 ## ----------------------------------------------------------------------------------- ##
 ## -- Product TAR/GZ filename: -- ##
 # Login and download from: https://community.denodo.com/express/download-installer-7.0/generic
-# Generic with no JVM file: denodo-express-install-7_0.zip
+# Generic with no JVM file: denodo-express-install-7.0.zip
 ARG PRODUCT_TAR=${PRODUCT_TAR:-${PRODUCT_NAME}-${PRODUCT_TYPE}-${PRODUCT_VERSION}.zip}
 
 ## -- Product Download full URL: -- ##
 ARG PRODUCT_DOWNLOAD_URL=${PRODUCT_DOWNLOAD_URL:-https://community.denodo.com/express/download-installer-7.0/generic}
 
-WORKDIR ${HOME}
+WORKDIR ${WORK_DIR}
 
-#### -- installation --- ####
-#### ---- Use local copy since Denodo requiring login to download ---- ####
-COPY ./denodo-express-install-7_0.zip ./
-
-RUN unzip ./denodo-express-install-7_0.zip && \
-    sudo chmod +x ./denodo-install-7.0/*.sh
-
-COPY ./response_file_7_0.xml ./denodo-install-7.0/
-
+#### ---- Installer Zip file ---- ####
 RUN mkdir -p ${PRODUCT_HOME}
-COPY ./denodo-express-lic-7_0.lic ${PRODUCT_HOME}/
 
-## -- Use the following command to generate response_file_7_0.xml first --
-## ${HOME}/denodo-install-7.0/installer_cli.sh generate ${HOME}/denodo-install-7.0/response_file_7_0.xml
+#### ---- Use local copy since Denodo requiring login to download ---- ####
+COPY ./${PRODUCT_INSTALLER_ZIP} ./
+RUN unzip ./${PRODUCT_INSTALLER_ZIP} && \
+    sudo chmod +x ${PRODUCT_INSTALLER_DIR}/*.sh
+
+#### ---- Installer Config file ---- ####
+COPY ./${PRODUCT_INSTALLER_RESPONSE_FILE} ${PRODUCT_INSTALLER_DIR}/
+
+#### ---- License file ---- ####
+COPY ./${PRODUCT_LICENSE} ${PRODUCT_INSTALLER_DIR}/
+
+## -- Use the following command to generate response_file_7.0.xml first --
+## ${HOME}/denodo-install-7.0/installer_cli.sh generate ${HOME}/denodo-install-7.0/response-file-7.0.xml
 ## -- Then, use autoinstaller option with the above reponse file to install Denodo Platfrom silently --
-## ~/denodo-install-7.0/installer_cli.sh install --autoinstaller ~/denodo-install-7.0/response_file_7_0.xml
-RUN ${HOME}/denodo-install-7.0/installer_cli.sh install --autoinstaller ${HOME}/denodo-install-7.0/response_file_7_0.xml
+## ~/denodo-install-7.0/installer_cli.sh install --autoinstaller ~/denodo-install-7.0/response-file-7.0.xml
+RUN ls -al ${PRODUCT_INSTALLER_DIR} && \
+    cp ${PRODUCT_INSTALLER_DIR}/${PRODUCT_LICENSE} ${PRODUCT_HOME}/
+RUN ${PRODUCT_INSTALLER_DIR}/installer_cli.sh install --autoinstaller ${PRODUCT_INSTALLER_DIR}/${PRODUCT_INSTALLER_RESPONSE_FILE}
 
-RUN sudo chown ${USER_NAME}:${USER_NAME} ${PRODUCT_HOME}/denodo-express-lic-7_0.lic && \
-    sudo rm -rf denodo-express-install-7_0.zip  
-## -- Need denodo-install-7.0 to run correctly (can't delete it!) -- ##
-## sudo rm -rf denodo-express-install-7_0.zip denodo-install-7.0  
+RUN \
+    sudo chown ${USER_NAME}:${USER_NAME} ${PRODUCT_HOME}/${PRODUCT_LICENSE} && \
+    sudo rm -rf ${PRODUCT_INSTALLER_ZIP}  
+
+## -- Need denodo-install-7.0 to run correctly (don't delete it!) -- ##
+## sudo rm -rf denodo-express-install-7.0.zip denodo-install-7.0  
 
 RUN \
     echo "PRODUCT_TAR=${PRODUCT_TAR}" && \
